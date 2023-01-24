@@ -36,6 +36,7 @@ import SwiftUI
 /// and respond to <doc:View-Input-and-Events>.
 /// You can also collect groups of default modifiers into new,
 /// custom view modifiers for easy reuse.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol CustomView: View {
     
     /// The type of view representing the body of this custom view.
@@ -62,6 +63,7 @@ public protocol CustomView: View {
     @CustomViewBuilder var customBody: Self.CustomBody { get }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomView where Body == CustomBody {
 
     public var body: Body {
@@ -71,6 +73,7 @@ extension CustomView where Body == CustomBody {
 
 // MARK: - View Conformations
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderPair: View where FirstContent: View, SecondContent: View {
     
     public var body: some View {
@@ -79,6 +82,7 @@ extension CustomBuilderPair: View where FirstContent: View, SecondContent: View 
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderConditional: View where TrueContent: View, FalseContent: View {
     
     public var body: some View {
@@ -91,6 +95,7 @@ extension CustomBuilderConditional: View where TrueContent: View, FalseContent: 
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderEmpty: View {
     
     public var body: some View {
@@ -98,6 +103,7 @@ extension CustomBuilderEmpty: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderBridge: View where Content: View {
     
     public var body: some View {
@@ -107,6 +113,7 @@ extension CustomBuilderBridge: View where Content: View {
 
 // MARK: - CustomView Conformations
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderPair: CustomView where FirstContent: CustomView, SecondContent: CustomView {
     
     public var customBody: Never {
@@ -114,6 +121,7 @@ extension CustomBuilderPair: CustomView where FirstContent: CustomView, SecondCo
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderConditional: CustomView where TrueContent: CustomView, FalseContent: CustomView {
     
     public var customBody: Never {
@@ -121,6 +129,7 @@ extension CustomBuilderConditional: CustomView where TrueContent: CustomView, Fa
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Optional: CustomView where Wrapped: CustomView {
     
     public var customBody: Never {
@@ -128,6 +137,7 @@ extension Optional: CustomView where Wrapped: CustomView {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderEmpty: CustomView {
     
     public var customBody: Never {
@@ -135,6 +145,7 @@ extension CustomBuilderEmpty: CustomView {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderBridge: CustomView where Content: View {
     
     public var customBody: Never {
@@ -142,6 +153,7 @@ extension CustomBuilderBridge: CustomView where Content: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Never: CustomView {
     
     public var customBody: some CustomView {

@@ -152,6 +152,7 @@ import SwiftUI
 /// Chocolate, Vanilla, and Strawberry, with the first of these selected.
 /// The second control has segments labeled Nuts, Cookies, and Blueberries,
 /// with the second of these selected.](Picker-3-iOS)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct CustomPicker<Label, SelectionValue, Content>: View where Label: View, SelectionValue: Hashable, Content: CustomView {
     
     private let selection: [Binding<SelectionValue>]
@@ -192,6 +193,7 @@ public struct CustomPicker<Label, SelectionValue, Content>: View where Label: Vi
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomPicker {
     
     /// Creates a custom picker that displays a custom label.
@@ -262,6 +264,7 @@ extension CustomPicker {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomPicker where Label == Text {
     
     /// Creates a custom picker that generates its label from a localized string key.

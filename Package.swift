@@ -4,9 +4,6 @@ import PackageDescription
 
 let package = Package(
     name: "CustomSwiftUI",
-    platforms: [
-        .iOS(.v15)
-    ],
     products: [
         .library(
             name: "CustomSwiftUI",

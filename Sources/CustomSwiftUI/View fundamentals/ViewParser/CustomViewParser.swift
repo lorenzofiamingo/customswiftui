@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 protocol CustomViewParser: DynamicProperty {
     
     associatedtype Output
@@ -13,6 +14,7 @@ protocol CustomViewParser: DynamicProperty {
     func parse(dynamicViewOutputs: [DynamicViewOutput]) -> Output
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomViewParser {
     
     typealias Action = ParseCustomViewAction<Output>
@@ -28,6 +30,7 @@ extension CustomViewParser {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomViewParser {
     
     func parse(customView: any CustomView) -> [CustomViewOutput] {
@@ -45,6 +48,7 @@ extension CustomViewParser {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomViewParser {
     
     func parse(customViewOutputs: [CustomViewOutput]) -> [ViewOutput] {
@@ -58,6 +62,7 @@ extension CustomViewParser {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomViewParser {
     
     func parse(viewOutputs: [ViewOutput]) -> [DynamicViewOutput] {
@@ -75,7 +80,7 @@ extension CustomViewParser {
     }
 }
 
-
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct ParseCustomViewAction<Output> {
     
     private let action: (any CustomView) -> Output
@@ -92,6 +97,7 @@ struct ParseCustomViewAction<Output> {
 
 // MARK: - CustomViewOutput
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct CustomViewOutput {
     
     let customView: any CustomView
@@ -99,11 +105,13 @@ struct CustomViewOutput {
     let path: CustomPath
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private protocol CustomViewOutputProvider {
     
     func makeViewOutputs(path: CustomPath) -> [CustomViewOutput]
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderPair: CustomViewOutputProvider where FirstContent: CustomView, SecondContent: CustomView {
     
     func makeViewOutputs(path: CustomPath) -> [CustomViewOutput] {
@@ -114,6 +122,7 @@ extension CustomBuilderPair: CustomViewOutputProvider where FirstContent: Custom
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderConditional: CustomViewOutputProvider where TrueContent: CustomView, FalseContent: CustomView {
     
     func makeViewOutputs(path: CustomPath) -> [CustomViewOutput] {
@@ -126,6 +135,7 @@ extension CustomBuilderConditional: CustomViewOutputProvider where TrueContent: 
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension Optional: CustomViewOutputProvider where Wrapped: CustomView {
     
     func makeViewOutputs(path: CustomPath) -> [CustomViewOutput] {
@@ -140,6 +150,7 @@ extension Optional: CustomViewOutputProvider where Wrapped: CustomView {
 
 // MARK: - ViewOutput
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct ViewOutput {
     
     let view: any View
@@ -147,11 +158,13 @@ struct ViewOutput {
     let path: CustomPath
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private protocol ViewOutputProvider {
     
     func makeViewOutputs(path: CustomPath) -> [ViewOutput]
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomBuilderBridge: ViewOutputProvider where Content: View {
     
     func makeViewOutputs(path: CustomPath) -> [ViewOutput] {
@@ -161,6 +174,7 @@ extension CustomBuilderBridge: ViewOutputProvider where Content: View {
 
 // MARK: - DynamicViewOutput
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct DynamicViewOutput {
     
     let view: any View
@@ -170,7 +184,7 @@ struct DynamicViewOutput {
     let defaultValue: (any Hashable)?
 }
 
-
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private protocol DynamicViewOuputProvider {
     
     associatedtype Data: RandomAccessCollection
@@ -186,6 +200,7 @@ private protocol DynamicViewOuputProvider {
     var idGeneratorProxy: CustomIDGenerator<Data.Element, ID>? { get }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension DynamicViewOuputProvider {
     
     func makeDynamicViewOutputs(path: CustomPath) -> [DynamicViewOutput] {
@@ -205,6 +220,7 @@ extension DynamicViewOuputProvider {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomForEach: DynamicViewOuputProvider where Content: View {
     
     var dataProxy: Data {
@@ -220,6 +236,7 @@ extension CustomForEach: DynamicViewOuputProvider where Content: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension ForEach: DynamicViewOuputProvider where Content: View {
     
     var dataProxy: Data {
@@ -235,6 +252,7 @@ extension ForEach: DynamicViewOuputProvider where Content: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension ModifiedContent: DynamicViewOuputProvider where Content: DynamicViewOuputProvider, Modifier: ViewModifier {
     
     var dataProxy: Content.Data {

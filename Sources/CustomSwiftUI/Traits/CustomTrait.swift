@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
     func customTrait<K: CustomTraitKey>(key: K.Type = K.self, value: K.Value) -> some View {
@@ -7,6 +8,7 @@ extension View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
     func customOnTraitChange<K: CustomTraitKey>(_ key: K.Type = K.self, perform action: @escaping (K.Value) -> Void) -> some View where K.Value: Equatable {
@@ -27,6 +29,7 @@ private struct CustomTraitKeyPreferenceKey<Key: CustomTraitKey>: PreferenceKey {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private struct CustomTraitReadingModifier<Key: CustomTraitKey>: ViewModifier where Key.Value: Equatable {
     
     private let readTraitAction: (Key.Value) -> Void
@@ -43,6 +46,7 @@ private struct CustomTraitReadingModifier<Key: CustomTraitKey>: ViewModifier whe
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private struct CustomTraitWritingModifier<Key: CustomTraitKey>: ViewModifier {
     
     private let value: Key.Value

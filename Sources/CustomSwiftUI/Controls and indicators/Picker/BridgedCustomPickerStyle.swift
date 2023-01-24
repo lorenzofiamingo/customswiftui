@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
     /// Sets the style for custom pickers within this view.
@@ -8,6 +9,7 @@ extension View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct BridgedCustomPickerStyle<BridgedPickerStyle: PickerStyle>: CustomPickerStyle {
     
     private typealias TagValue = BridgedCustomPickerStyleTagValue
@@ -72,6 +74,7 @@ struct BridgedCustomPickerStyle<BridgedPickerStyle: PickerStyle>: CustomPickerSt
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private enum BridgedCustomPickerStyleTagValue: Hashable {
     
     case tagged(CustomPickerOption.Value)

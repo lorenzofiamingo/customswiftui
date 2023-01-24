@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomPickerStyle {
     
     func makePicker(configuration: Configuration) -> some View {
@@ -7,6 +8,7 @@ extension CustomPickerStyle {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private struct CustomPickerStyleView<Style: CustomPickerStyle>: View {
     
     private let style: Style

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
     /// Sets the style for custom pickers within this view.
@@ -9,6 +10,7 @@ extension View {
 }
 
 /// A type that specifies the appearance and interaction of all custom pickers within a view hierarchy.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol CustomPickerStyle: DynamicProperty {
     
     /// A view that represents the body of a custompicker.
@@ -27,6 +29,7 @@ public protocol CustomPickerStyle: DynamicProperty {
 }
 
 /// The properties of a custom picker.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct CustomPickerStyleConfiguration {
     
     /// A type-erased label of a custom picker.
@@ -55,6 +58,7 @@ public struct CustomPickerStyleConfiguration {
 }
 
 /// A type-erased option of a custom picker.
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct CustomPickerOption: View, Identifiable {
     
     /// A type-erased value of a custom picker option.
@@ -119,11 +123,13 @@ public struct CustomPickerOption: View, Identifiable {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct CustomPickerStyleKey: EnvironmentKey {
     
     static var defaultValue: any CustomPickerStyle = BridgedCustomPickerStyle(.automatic)
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension EnvironmentValues {
     
     var customPickerStyle: any CustomPickerStyle {

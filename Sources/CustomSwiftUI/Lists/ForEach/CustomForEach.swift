@@ -38,6 +38,7 @@ import SwiftUI
 ///
 /// ![A vertically arranged stack of labels showing various standard fonts,
 /// such as Large Title and Headline.](SwiftUI-ForEach-fonts.png)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct CustomForEach<Data: RandomAccessCollection, ID: Hashable, Content> {
     
     /// An enumeration to generate stable identity using the underlying data.
@@ -170,6 +171,7 @@ extension CustomForEach {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomForEach where ID == Data.Element.ID, Data.Element: Identifiable, Content: View  {
     
     /// Creates an instance that uniquely identifies and creates views across
@@ -190,6 +192,7 @@ extension CustomForEach where ID == Data.Element.ID, Data.Element: Identifiable,
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomForEach where Content: View  {
     
     /// Creates an instance that uniquely identifies and creates views across
@@ -273,6 +276,7 @@ extension CustomForEach where Content: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomForEach where Data == Range<Int>, ID == Int, Content: View {
     
     /// Creates an instance that computes views on demand over a given constant
@@ -295,6 +299,7 @@ extension CustomForEach where Data == Range<Int>, ID == Int, Content: View {
 
 // MARK: - Implementations
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomForEach: View where Content: View {
     
     /// The content and behavior of the view.
@@ -317,5 +322,6 @@ extension CustomForEach: View where Content: View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomForEach: DynamicViewContent where Content: View {}
 

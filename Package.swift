@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "CustomSwiftUI",
+    name: "customswiftui",
     products: [
         .library(
             name: "CustomSwiftUI",

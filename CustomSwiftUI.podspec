@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
   spec.homepage         = 'https://github.com/lorenzofiamingo/customswiftui'
   spec.authors          = { 'Lorenzo Fiamingo' => 'l99fiamingo@gmail.com' }
   spec.summary          = 'CustomSwiftUI aims to complement the SwiftUI standard library.'
-  spec.source           = { :git => 'https://github.com/lorenzofiamingo/customswiftui', :tag => spec.version.to_s }
+  spec.source           = { :git => 'https://github.com/lorenzofiamingo/customswiftui.git', :tag => spec.version.to_s }
   spec.source_files     = [ 'Sources/**/*.swift' ]
 
 

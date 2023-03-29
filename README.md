@@ -1,4 +1,4 @@
-[![CocoaPods Deployment](https://github.com/lorenzofiamingo/customswiftui/actions/workflows/deploy_to_cocoapods.yml/badge.svg)](https://github.com/lorenzofiamingo/customswiftui/actions/workflows/deploy_to_cocoapods.yml)
+[![Deploy To CocoaPods](https://github.com/lorenzofiamingo/customswiftui/actions/workflows/deploy_to_cocoapods.yml/badge.svg)](https://github.com/lorenzofiamingo/customswiftui/actions/workflows/deploy_to_cocoapods.yml)
 
 # CustomSwiftUI
 

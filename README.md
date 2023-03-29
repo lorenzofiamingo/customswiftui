@@ -1,3 +1,5 @@
+[![Deploy To Cocoapods](https://github.com/lorenzofiamingo/customswiftui/actions/workflows/deploy_to_cocoapods.yml/badge.svg)](https://github.com/lorenzofiamingo/customswiftui/actions/workflows/deploy_to_cocoapods.yml)
+
 # CustomSwiftUI
 
 CustomSwiftUI aims to complement the SwiftUI standard library. 

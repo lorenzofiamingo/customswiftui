@@ -27,6 +27,10 @@ CustomSwiftUI should cover those cases:
 - [x] `CustomPicker`
 : `CustomPicker` makes possible to implement picker style via `CustomPickerStyle` and polyfills the creation of picker from a collection.
 
+### Drawing and graphics
+- [x] `customTint`
+: `customTint` makes possible to set and retrieve a tint color in the environment.
+
 ## Design
 
 The purpose of CustomSwiftUI is to extend the SwiftUI library by ensuring the greatest possible consistency with it, so the APIs of the two libraries have to match as much as possible.

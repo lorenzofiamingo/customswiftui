@@ -17,6 +17,9 @@ struct ContentView: View {
           NavigationLink("Controls and indicators") {
             ControlsAndIndicatorsView()
           }
+          NavigationLink("Drawing and graphics") {
+            DrawingAndGraphicsView()
+          }
         }
       }
       .navigationTitle("CustomSwiftUI")

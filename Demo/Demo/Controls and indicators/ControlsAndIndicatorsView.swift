@@ -12,6 +12,9 @@ struct ControlsAndIndicatorsView: View {
         NavigationLink("Picker") {
           CustomPickerDemo()
         }
+        NavigationLink("MultiPicker") {
+          CustomMultiPickerDemo()
+        }
       }
     }
     .navigationTitle("Controls and indicators")

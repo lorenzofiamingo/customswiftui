@@ -3,7 +3,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
-    func customTrait<K: CustomTraitKey>(key: K.Type = K.self, value: K.Value) -> some View {
+    public func customTrait<K: CustomTraitKey>(key: K.Type = K.self, value: K.Value) -> some View {
         modifier(CustomTraitWritingModifier<K>(value: value))
     }
 }
@@ -11,7 +11,7 @@ extension View {
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension View {
     
-    func customOnTraitChange<K: CustomTraitKey>(_ key: K.Type = K.self, perform action: @escaping (K.Value) -> Void) -> some View where K.Value: Equatable {
+    public func customOnTraitChange<K: CustomTraitKey>(_ key: K.Type = K.self, perform action: @escaping (K.Value) -> Void) -> some View where K.Value: Equatable {
         modifier(CustomTraitReadingModifier<K>(readTraitAction: action))
     }
 }

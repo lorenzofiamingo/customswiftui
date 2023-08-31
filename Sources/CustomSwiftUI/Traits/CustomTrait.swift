@@ -16,6 +16,14 @@ extension View {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+extension View {
+    
+    public func customTransformTrait<K: CustomTraitKey>(_ key: K.Type = K.self, _ callback: @escaping (inout K.Value) -> Void) -> some View where K.Value: Equatable {
+        modifier(CustomTransformTraitModifier<K>(transformTraitCallback: callback))
+    }
+}
+
 private struct CustomTraitKeyPreferenceKey<Key: CustomTraitKey>: PreferenceKey {
     
     static var defaultValue: Key.Value? {
@@ -48,18 +56,37 @@ private struct CustomTraitReadingModifier<Key: CustomTraitKey>: ViewModifier whe
 
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 private struct CustomTraitWritingModifier<Key: CustomTraitKey>: ViewModifier {
-    
+
     private let value: Key.Value
-    
+
     init(value: Key.Value) {
         self.value = value
     }
-    
+
     func body(content: Content) -> some View {
         content
             .transformPreference(CustomTraitKeyPreferenceKey<Key>.self) { trait in
                 if trait == nil {
                     trait = value
+                }
+            }
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+private struct CustomTransformTraitModifier<Key: CustomTraitKey>: ViewModifier {
+
+    private let transformTraitCallback: (inout Key.Value) -> Void
+
+    init(transformTraitCallback: @escaping (inout Key.Value) -> Void) {
+        self.transformTraitCallback = transformTraitCallback
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .transformPreference(CustomTraitKeyPreferenceKey<Key>.self) { trait in
+                if trait != nil  {
+                    transformTraitCallback(&trait!)
                 }
             }
     }

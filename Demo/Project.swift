@@ -11,9 +11,7 @@ let fileHeaderTemplate: FileHeaderTemplate = """
 // MARK: - Project Options
 
 let options = Project.Options.options(
-    developmentRegion: "it",
-    // disableBundleAccessors: true,
-    textSettings: .textSettings(usesTabs: false, indentWidth: 2, tabWidth: 2, wrapsLines: true)
+    developmentRegion: "it"
 )
 
 // MARK: - Demo Target

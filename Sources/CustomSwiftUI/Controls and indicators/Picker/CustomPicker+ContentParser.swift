@@ -17,10 +17,19 @@ extension CustomPicker {
             let options = dynamicViewOutputs
                 .map { dynamicViewOutput in
                     let id = namespaceGenerator.generate(forPath: dynamicViewOutput.path).id
+
+                    let defaultValue: SelectionValue?
+                    // The type check is needed because, for example, String could cast to Optional<String>
+                    if let existentialDefaultValue = dynamicViewOutput.defaultValue, type(of: existentialDefaultValue) == SelectionValue.self {
+                        defaultValue = (existentialDefaultValue as! SelectionValue)
+                    } else {
+                        defaultValue = nil
+                    }
+
                     return CustomPickerOption(
                         id: id,
                         tagValue: optionTagValues[id],
-                        defaultValue: dynamicViewOutput.defaultValue as? SelectionValue? ?? nil,
+                        defaultValue: defaultValue,
                         content: bindOptionContent(dynamicViewOutput.view, id: id)
                     )
                 }

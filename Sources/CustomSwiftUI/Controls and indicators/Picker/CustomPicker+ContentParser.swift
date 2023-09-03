@@ -13,20 +13,20 @@ extension CustomPicker {
             action
         }
         
-        func parse(dynamicViewOutputs: [DynamicViewOutput]) -> [CustomPickerOption] {
+        func parse(dynamicViewOutputs: [DynamicViewOutput]) -> [CustomPickerOption.ParsedInformation<SelectionValue>] {
             let options = dynamicViewOutputs
                 .map { dynamicViewOutput in
                     let id = namespaceGenerator.generate(forPath: dynamicViewOutput.path).id
 
                     let defaultValue: SelectionValue?
-                    // The type check is needed because, for example, String could cast to Optional<String>
+                    // The type check is needed because, for example, String could cast to Optional<String>.
                     if let existentialDefaultValue = dynamicViewOutput.defaultValue, type(of: existentialDefaultValue) == SelectionValue.self {
                         defaultValue = (existentialDefaultValue as! SelectionValue)
                     } else {
                         defaultValue = nil
                     }
 
-                    return CustomPickerOption(
+                    return CustomPickerOption.ParsedInformation(
                         id: id,
                         tagValue: optionTagValues[id],
                         defaultValue: defaultValue,

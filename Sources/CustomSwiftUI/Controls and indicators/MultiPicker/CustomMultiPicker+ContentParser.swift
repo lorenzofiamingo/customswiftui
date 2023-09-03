@@ -13,7 +13,7 @@ extension CustomMultiPicker {
             action
         }
 
-        func parse(dynamicViewOutputs: [DynamicViewOutput]) -> [CustomMultiPickerOption] {
+        func parse(dynamicViewOutputs: [DynamicViewOutput]) -> [CustomMultiPickerOption.ParsedInformation<SelectionValue>] {
             let options = dynamicViewOutputs
                 .map { dynamicViewOutput in
                     let id = namespaceGenerator.generate(forPath: dynamicViewOutput.path).id
@@ -26,7 +26,7 @@ extension CustomMultiPicker {
                         defaultValue = nil
                     }
 
-                    return CustomMultiPickerOption(
+                    return CustomMultiPickerOption.ParsedInformation(
                         id: id,
                         tagValue: optionTagValues[id],
                         defaultValue: defaultValue,

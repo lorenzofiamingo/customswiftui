@@ -5,22 +5,7 @@ struct ToggleCustomMultiPickerStyle: CustomMultiPickerStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         ForEach(configuration.options) { option in
-            let isOn = Binding<Bool> {
-                guard let value = option.value else {
-                    return false
-                }
-                return configuration.selection.wrappedValue.contains(value)
-            } set: { isOn in
-                guard let value = option.value else {
-                    return
-                }
-                if isOn {
-                    configuration.selection.wrappedValue.insert(value)
-                } else {
-                    configuration.selection.wrappedValue.remove(value)
-                }
-            }
-            Toggle(isOn: isOn) {
+            Toggle(isOn: option.$isOn) {
                 option
             }
         }

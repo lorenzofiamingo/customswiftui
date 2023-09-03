@@ -10,21 +10,11 @@ struct ColorPickerStyle: CustomPickerStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             ForEach(configuration.options) { option in
-                let isSelected = configuration.selection.first?.wrappedValue == option.value
-                let isMixed = configuration.selection.contains { source in
-                    source.wrappedValue == option.value
-                }
-                Button {
-                    if let value = option.value {
-                        configuration.selection.forEach { source in
-                            source.wrappedValue = value
-                        }
-                    }
-                } label: {
+                Button(action: option.select) {
                     option
                 }
                 .buttonStyle(.bordered)
-                .tint(isSelected ? .green : isMixed ? .orange : .red)
+                .tint(option.isSelected ? .green : option.isMixed ? .orange : .red)
             }
         }
         .animation(.default, value: configuration.selection.first?.wrappedValue)

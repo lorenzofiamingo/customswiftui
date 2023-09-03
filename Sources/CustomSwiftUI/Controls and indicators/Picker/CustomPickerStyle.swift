@@ -72,34 +72,51 @@ public struct CustomPickerOption: View, Identifiable {
     
     /// A view that contains the content of the custom picker option.
     private let content: Content
-    
+
+    private let _select: () -> Void
+
     let tagValue: Value?
     
     let defaultValue: Value?
-    
+
     /// The value associated with the custom picker option.
     public var value: Value? {
         tagValue ?? defaultValue
     }
-    
+
+    public var isSelected: Bool
+
+    public var isMixed: Bool
+
+    public func select() {
+        _select()
+    }
+
     init<SelectionValue: Hashable>(
-        id: ID,
-        tagValue: SelectionValue?,
-        defaultValue: SelectionValue?,
-        content: any View
+        parsedInformation: ParsedInformation<SelectionValue>,
+        selection: [Binding<SelectionValue>]
     ) {
-        self.id = id
-        if let tagValue {
+        self.id = parsedInformation.id
+        if let tagValue = parsedInformation.tagValue {
             self.tagValue = Value(tagValue)
         } else {
             self.tagValue = nil
         }
-        if let defaultValue {
+        if let defaultValue = parsedInformation.defaultValue {
             self.defaultValue = Value(defaultValue)
         } else {
             self.defaultValue = nil
         }
-        self.content = Content(content)
+        self.content = Content(parsedInformation.content)
+        if let value = parsedInformation.tagValue ?? parsedInformation.defaultValue {
+            self.isSelected = selection.allSatisfy { $0.wrappedValue == value }
+            self.isMixed = selection.contains { $0.wrappedValue == value } && selection.contains { $0.wrappedValue != value }
+            self._select = { selection.forEach { $0.wrappedValue = value } }
+        } else {
+            self.isSelected = false
+            self.isMixed = false
+            self._select = {}
+        }
     }
     
     /// The content and behavior of the view.
@@ -120,6 +137,28 @@ public struct CustomPickerOption: View, Identifiable {
     public var body: some View {
         content
             .id(id)
+    }
+
+    struct ParsedInformation<SelectionValue> {
+        let id: ID
+
+        let tagValue: SelectionValue?
+
+        let defaultValue: SelectionValue?
+
+        let content: Content
+
+        init(
+            id: ID,
+            tagValue: SelectionValue?,
+            defaultValue: SelectionValue?,
+            content: any View
+        ) {
+            self.id = id
+            self.tagValue = tagValue
+            self.defaultValue = defaultValue
+            self.content = Content(content)
+        }
     }
 }
 

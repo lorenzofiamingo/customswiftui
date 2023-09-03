@@ -168,7 +168,12 @@ public struct CustomPicker<Label, SelectionValue, Content>: View where Label: Vi
     private var configuration: CustomPickerStyleConfiguration {
         CustomPickerStyleConfiguration(
             label: CustomPickerStyleConfiguration.Label(label),
-            options: parse(content),
+            options: parse(content).map {
+                CustomPickerOption(
+                    parsedInformation: $0,
+                    selection: selection
+                )
+            },
             selection: selection
         )
     }

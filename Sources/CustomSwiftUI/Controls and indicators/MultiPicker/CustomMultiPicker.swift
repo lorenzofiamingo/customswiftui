@@ -155,7 +155,7 @@ import SwiftUI
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 public struct CustomMultiPicker<Label, SelectionValue, Content>: View where Label: View, SelectionValue: Hashable, Content: CustomView {
 
-    private let selection: Binding<Set<SelectionValue>>
+    private let selection: [Binding<Set<SelectionValue>>]
 
     private let label: Label
 
@@ -168,7 +168,12 @@ public struct CustomMultiPicker<Label, SelectionValue, Content>: View where Labe
     private var configuration: CustomMultiPickerStyleConfiguration {
         CustomMultiPickerStyleConfiguration(
             label: CustomMultiPickerStyleConfiguration.Label(label),
-            options: parse(content),
+            options: parse(content).map {
+                CustomMultiPickerOption(
+                    parsedInformation: $0,
+                    selection: selection
+                )
+            },
             selection: selection
         )
     }
@@ -204,7 +209,7 @@ extension CustomMultiPicker {
     ///     - content: A view that contains the set of options.
     ///     - label: A view that describes the purpose of selecting an option.
     public init(selection: Binding<Set<SelectionValue>>, @CustomViewBuilder content: () -> Content, @ViewBuilder label: () -> Label) {
-        self.selection = selection
+        self.selection = [selection]
         self.label = label()
         self.content = content()
     }

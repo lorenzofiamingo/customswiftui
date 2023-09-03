@@ -48,15 +48,17 @@ public struct CustomMultiPickerStyleConfiguration {
     public let options: [Option]
 
     /// A binding to a state property that indicates which values are currently selected.
-    public let selection: Binding<Set<SelectionValue>>
+    public let selection: [Binding<Set<SelectionValue>>]
 
-    init<V: Hashable>(label: some View, options: [CustomMultiPickerOption], selection: Binding<Set<V>>) {
+    init<V: Hashable>(label: some View, options: [CustomMultiPickerOption], selection: [Binding<Set<V>>]) {
         self.label = AnyView(label)
         self.options = options
-        self.selection = Binding {
-            Set(selection.wrappedValue.map { $0 })
-        } set: { newValue in
-            selection.wrappedValue = Set(newValue.map { $0.base as! V })
+        self.selection = selection.map { s in
+            Binding {
+                Set(s.wrappedValue.map { $0 })
+            } set: { newValue in
+                s.wrappedValue = Set(newValue.map { $0.base as! V })
+            }
         }
     }
 }
@@ -86,24 +88,41 @@ public struct CustomMultiPickerOption: View, Identifiable {
         tagValue ?? defaultValue
     }
 
+    @Binding public var isOn: Bool
+
+    public var isMixed: Bool
+
     init<SelectionValue: Hashable>(
-        id: ID,
-        tagValue: SelectionValue?,
-        defaultValue: SelectionValue?,
-        content: any View
+        parsedInformation: ParsedInformation<SelectionValue>,
+        selection: [Binding<Set<SelectionValue>>]
     ) {
-        self.id = id
-        if let tagValue {
+        self.id = parsedInformation.id
+        if let tagValue = parsedInformation.tagValue {
             self.tagValue = Value(tagValue)
         } else {
             self.tagValue = nil
         }
-        if let defaultValue {
+        if let defaultValue = parsedInformation.defaultValue {
             self.defaultValue = Value(defaultValue)
         } else {
             self.defaultValue = nil
         }
-        self.content = Content(content)
+        self.content = Content(parsedInformation.content)
+        if let value = parsedInformation.tagValue ?? parsedInformation.defaultValue {
+            self._isOn = Binding {
+                selection.allSatisfy { $0.wrappedValue.contains(value) }
+            } set: { isOn in
+                if isOn {
+                    selection.forEach { $0.wrappedValue.insert(value) }
+                } else {
+                    selection.forEach { $0.wrappedValue.remove(value) }
+                }
+            }
+            self.isMixed = selection.contains { $0.wrappedValue.contains(value) } && selection.contains { !$0.wrappedValue.contains(value) }
+        } else {
+            self._isOn = .constant(false)
+            self.isMixed = false
+        }
     }
 
     /// The content and behavior of the view.
@@ -124,6 +143,28 @@ public struct CustomMultiPickerOption: View, Identifiable {
     public var body: some View {
         content
             .id(id)
+    }
+
+    struct ParsedInformation<SelectionValue> {
+        let id: ID
+
+        let tagValue: SelectionValue?
+
+        let defaultValue: SelectionValue?
+
+        let content: Content
+
+        init(
+            id: ID,
+            tagValue: SelectionValue?,
+            defaultValue: SelectionValue?,
+            content: any View
+        ) {
+            self.id = id
+            self.tagValue = tagValue
+            self.defaultValue = defaultValue
+            self.content = Content(content)
+        }
     }
 }
 

@@ -23,6 +23,6 @@ private struct CustomPickerStyleView<Style: CustomPickerStyle>: View {
     var body: some View {
         style.makeBody(configuration: configuration)
             // customOnTraitChange action, since it uses transformPreference, doesn't get called when the view is not in hierarchy, so this is required in order to update option tag values.
-            .background(ForEach(configuration.options) { $0 }.frame(width: 0, height: 0))
+            .background(ForEach(configuration.options) { $0 }.frame(width: 0, height: 0).clipped())
     }
 }

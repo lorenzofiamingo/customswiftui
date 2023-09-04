@@ -23,9 +23,10 @@ private struct CustomTraitKeyPreferenceKey<Key: CustomTraitKey>: PreferenceKey {
     }
 
     static func reduce(value: inout Key.Value?, nextValue: () -> Key.Value?) {
-        var _value = value ?? Key.defaultValue
-        Key.reduce(value: &_value) { nextValue() ?? Key.defaultValue }
-        value = _value
+        if var _value = value, let nextValue = nextValue() {
+            Key.reduce(value: &_value) { nextValue }
+            value = _value
+        }
     }
 }
 

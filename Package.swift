@@ -9,10 +9,13 @@ let package = Package(
             name: "CustomSwiftUI",
             targets: ["CustomSwiftUI"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/wickwirew/Runtime.git", branch: "master")
+    ],
     targets: [
         .target(
             name: "CustomSwiftUI",
-            dependencies: []
+            dependencies: ["Runtime"]
         )
     ]
 )

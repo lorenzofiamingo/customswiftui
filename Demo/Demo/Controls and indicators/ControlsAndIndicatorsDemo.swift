@@ -4,12 +4,12 @@
 
 import SwiftUI
 
-struct ControlsAndIndicatorsView: View {
+struct ControlsAndIndicatorsDemo: View {
   
   var body: some View {
     List {
       Section("Choosing from a set of options") {
-        NavigationLink("Picker") {
+        NavigationLink("CustomPicker") {
           CustomPickerDemo()
         }
       }

@@ -13,9 +13,14 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       List {
+        Section("App structure") {
+          NavigationLink("Navigation") {
+            NavigationDemo()
+          }
+        }
         Section("Views") {
           NavigationLink("Controls and indicators") {
-            ControlsAndIndicatorsView()
+            ControlsAndIndicatorsDemo()
           }
         }
       }

@@ -17,10 +17,20 @@ import Runtime
     //}
 }
 
+
+
 @available(iOS 16.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 extension CustomNavigationStack: View where Data: MutableCollection & RandomAccessCollection & RangeReplaceableCollection, Data.Element: Hashable {
 
     public var body: some View {
+        if #available(iOS 15.0, *) {
+            let _ = Self._printChanges()
+            let _ = print(localStateHost.navigationState?.bindedDestinations.map({ key, value in
+                (key, value.binding.wrappedValue)
+            }) ?? [])
+        } else {
+            fatalError()
+        }
         BridgedNavigationController(root: root, data: $data)
             .environmentObject(localStateHost)
             .environment(\.customParentNavigationState, localStateHost.navigationState)
@@ -52,6 +62,13 @@ struct BridgedNavigationController<Data: MutableCollection & RandomAccessCollect
     }
 
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
+        print("R", navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
+            (key, value.binding.wrappedValue)
+        }) ?? [])
+        DispatchQueue.main.async {
+            print("S", navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
+                (key, value.binding.wrappedValue)
+            }) ?? [])
         let currentRealPath = context.coordinator.currentRealPathBridged.map(\.path)
         var realPath: [RealPathElement] = currentRealPath
             .enumerated()
@@ -72,16 +89,9 @@ struct BridgedNavigationController<Data: MutableCollection & RandomAccessCollect
                 }
             }
 
-        DispatchQueue.main.async {
-            print("WWWbig", ObjectIdentifier(navigationStateHost))
-            print("WWWbig", navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
-                (key, value.binding)
-            }) ?? [])
-        }
-
-        for (id, isPresented) in navigationStateHost.navigationState?.bindedDestinations.map({ ($0, $1.binding) }) ?? [] {
+        for (id, destination) in navigationStateHost.navigationState?.bindedDestinations.map({ ($0, $1) }) ?? [] {
+            let isPresented = destination.binding.wrappedValue
             if isPresented && realPath.allSatisfy({ $0 != .binded(id)}) {
-                print("WWWbig", isPresented, id)
                 realPath.append(.binded(id))
             } else if !isPresented {
                 realPath.removeAll(where: { $0 == .binded(id)})
@@ -97,7 +107,7 @@ struct BridgedNavigationController<Data: MutableCollection & RandomAccessCollect
                         let controller: UIViewController?
                         switch element {
                         case .root:
-                            controller = InspectorController(rootView: root)
+                            controller = UIHostingController(rootView: root)
                         case .data(let data):
                             let destinationKey = ObjectIdentifier(type(of: data))
                             let destinationResolver = navigationStateHost.navigationState?.destinations[destinationKey] as? CustomNavigationDestinationResolver
@@ -127,13 +137,13 @@ struct BridgedNavigationController<Data: MutableCollection & RandomAccessCollect
                         }
                     }
                 }
-                DispatchQueue.main.async {
+                //DispatchQueue.main.async {
                     uiViewController.setViewControllers(context.coordinator.currentRealPathBridged.map(\.viewController), animated: true)
-                }
+                //}
             }
         }
 
-        DispatchQueue.main.async {
+
             for (element, viewController) in context.coordinator.currentRealPathBridged {
                 switch element {
                 case .root:
@@ -149,12 +159,20 @@ struct BridgedNavigationController<Data: MutableCollection & RandomAccessCollect
                     // Check if updates state of destination view (rex must appear in path)
                     destinationResolver.updateViewController(viewController, data: data)
                 case .binded(let id):
-                    navigationStateHost.navigationState?.bindedDestinations[id]?.resolver.updateViewController(viewController)
+                    print("A", navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
+                        (key, value.binding.wrappedValue)
+                    }) ?? [])
+                    DispatchQueue.main.async {
+                        print("B", navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
+                            (key, value.binding.wrappedValue)
+                        }) ?? [])
+                            navigationStateHost.navigationState?.bindedDestinations[id]?.resolver.updateViewController(viewController)
+                        }
                 case .unbacked:
                     break
                 }
             }
-        }
+    }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -250,15 +268,17 @@ struct NavigationDestinationModifier<D: Hashable, C: View>: ViewModifier {
             content
         } else {
             content
-                .onMake { _, _ in
-                    let resolver = CustomNavigationDestinationResolver()
-                    resolver.updateDestination(destination: destination)
-                    navigationStateHost.navigationState!.destinations[ObjectIdentifier(D.self)] = resolver
-                }
                 .onUpdate { _, _ in
                     let destinationResolver = navigationStateHost.navigationState!.destinations[ObjectIdentifier(D.self)] as? CustomNavigationDestinationResolver
                     destinationResolver?.updateDestination(destination: destination)
                     //THis is called to late
+                }
+                .onMake { _, _ in
+                    let resolver = CustomNavigationDestinationResolver()
+                    resolver.updateDestination(destination: destination)
+                    DispatchQueue.main.async {
+                        navigationStateHost.navigationState!.destinations[ObjectIdentifier(D.self)] = resolver
+                    }
                 }
         }
     }
@@ -293,25 +313,27 @@ struct ViewDestinationNavigationDestinationModifier<C: View>: ViewModifier {
         if navigationState == nil {
             content
         } else {
+            if #available(iOS 15.0, *) {
+                let _ = Self._printChanges()
+            } else {
+                fatalError()
+            }
             content
+                .onUpdate { _, _ in
+                    let destination = navigationStateHost.navigationState!.bindedDestinations[id]
+                    print("U", isPresented, navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
+                        (key, value.binding.wrappedValue)
+                    }) ?? [])
+                    destination?.resolver.updateDestination(destination: { self.destination })
+                }
                 .onMake { _, _ in
                     let resolver = CustomViewDestinationNavigationDestinationResolver()
                     resolver.updateDestination(destination: { destination })
-                    navigationStateHost.navigationState!.bindedDestinations[id] = (isPresented, resolver)
-                }
-                .onUpdate { _, _ in
-                    let destination = navigationStateHost.navigationState!.bindedDestinations[id]
-                    destination?.resolver.updateDestination(destination: { self.destination })
-                    print("WWW", "Update \(isPresented)")
-                }
-                .customOnChange(of: isPresented) {
-                    let destination = navigationStateHost.navigationState!.bindedDestinations[id]
-                    navigationStateHost.navigationState!.bindedDestinations[id]?.binding = isPresented
-                    destination?.resolver.updateDestination(destination: { self.destination })
-                    print("WWW", ObjectIdentifier(navigationStateHost))
-                    print("WWW", id, navigationStateHost.navigationState!.bindedDestinations[id]?.binding)
-                    print("WWW", navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
-                        (key, value.binding)
+                    DispatchQueue.main.async {
+                        navigationStateHost.navigationState!.bindedDestinations[id] = ($isPresented, resolver)
+                    }
+                    print("M", isPresented, navigationStateHost.navigationState?.bindedDestinations.map({ key, value in
+                        (key, value.binding.wrappedValue)
                     }) ?? [])
                 }
         }

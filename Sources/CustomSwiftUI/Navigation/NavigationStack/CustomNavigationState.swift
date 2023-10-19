@@ -3,12 +3,10 @@ import SwiftUI
 // _parentNavigationState in environment
 @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct CustomNavigationState {
-
-    var realPath = CustomAnyNavigationPath()
-
+    
     var destinations: [ObjectIdentifier: CustomNavigationDestinationResolverBase]
 
-    var bindedDestinations: [UUID: (binding: Bool, resolver: CustomViewDestinationNavigationDestinationResolver)]
+    var bindedDestinations: [UUID: (binding: Binding<Bool>, resolver: CustomViewDestinationNavigationDestinationResolver)]
 }
 
 class CustomNavigationDestinationResolverBase {}

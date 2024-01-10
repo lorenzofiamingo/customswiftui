@@ -43,7 +43,6 @@ extension CustomUIViewRepresentable {
 
     public static func dismantleUIView(_ uiView: UIViewType, coordinator: Coordinator) {}
 
-
     public var body: some View {
         RepresentableView(customRepresentable: self)
     }
@@ -80,7 +79,7 @@ private struct RepresentableView<CustomRepresentable: CustomUIViewRepresentable>
 
     var customRepresentable: CustomRepresentable
 
-    @ObservedObject private var coordinator = LayuotCoordinator()
+    @CustomStateObject private var coordinator = LayuotCoordinator()
 
     var body: some View {
         ZStack {
@@ -173,6 +172,10 @@ private class LayuotCoordinator: ObservableObject {
     var layoutPhase: LayoutPhase = .idle
 
     var contentOpacity: CGFloat = 0
+
+    init() {
+        print("HOLA")
+    }
 
     enum LayoutPhase {
         case idle // first we apply updateUIView than we calculate flex sizes.

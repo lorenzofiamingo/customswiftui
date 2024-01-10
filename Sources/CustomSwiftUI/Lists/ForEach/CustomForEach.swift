@@ -186,7 +186,7 @@ extension CustomForEach where ID == Data.Element.ID, Data.Element: Identifiable,
     ///   - data: The identified data that the ``CustomForEach`` instance uses to
     ///     create views dynamically.
     ///   - content: The view builder that creates views dynamically.
-    public init(_ data: Data, content: @escaping (Data.Element) -> Content) {
+    public init(_ data: Data, @ViewBuilder content: @escaping (Data.Element) -> Content) {
         self.forEach = ForEach(data, content: content)
         self.idGenerator = .keyPath(\Data.Element.id)
     }
@@ -290,7 +290,7 @@ extension CustomForEach where Data == Range<Int>, ID == Int, Content: View {
     ///   - data: A constant range.
     ///   - content: The view builder that creates views dynamically.
     @_semantics("swiftui.requires_constant_range")
-    public init(_ data: Range<Int>, content: @escaping (Int) -> Content) {
+    public init(_ data: Range<Int>, @ViewBuilder content: @escaping (Int) -> Content) {
         self.forEach = ForEach(data, content: content)
         self.idGenerator = .offset
     }

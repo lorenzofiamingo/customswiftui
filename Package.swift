@@ -7,7 +7,11 @@ let package = Package(
     products: [
         .library(
             name: "CustomSwiftUI",
-            targets: ["CustomSwiftUI"]),
+            targets: ["CustomSwiftUI"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-format", from: "509.0.0")
     ],
     targets: [
         .target(

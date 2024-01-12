@@ -9,11 +9,11 @@ extension CustomScrollTransitionConfiguration {
 
         let storage: Storage
 
-        indirect enum Storage {
+        enum Storage {
             case center
             case visibility(_ amount: CGFloat)
-            case inset(Double, Storage)
-            case mix(from: Storage, to: Storage, amount: Double)
+            indirect case inset(Double, Storage)
+            indirect case mix(from: Storage, to: Storage, amount: Double)
         }
 
         /// Thresholds for contentFrame offset (aka origin). (0, 0) is at center of container. and origin of content is at  its center also.
